@@ -101,8 +101,8 @@ ExcellentExport = (function() {
     var base64 = function(s) {
         return window.btoa(window.unescape(encodeURIComponent(s)));
     };
-    var format = function(s, c) {
-        return s.replace(new RegExp("{(\\w+)}", "g"), function(m, p) {
+    var format = function(worksheet, s, c) {
+        return s.replace(/{worksheet}/g, worksheet).replace(new RegExp("{(\\w+)}", "g"), function(m, p) {
             return c[p];
         });
     };
@@ -147,7 +147,7 @@ ExcellentExport = (function() {
         excel: function(anchor, table, name) {
             table = get(table);
             var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML};
-            var hrefvalue = uri.excel + base64(format(template.excel, ctx));
+            var hrefvalue = uri.excel + base64(format(name || 'Worksheet',template.excel, ctx));
             anchor.href = hrefvalue;
             // Return true to allow the link to work
             return true;
